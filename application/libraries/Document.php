@@ -247,7 +247,8 @@ class Document {
 												$document['paths']['statics'] : 
 												'templates/'.$template_name.'/statics');
 		
-		if(isset($document['title']) && is_array($document['title'])){
+		if(isset($document['title']) && is_array($document['title']))
+		{
 			$this->_title_prefix    = isset($document['title']['prefix'])    ? $document['title']['prefix']    : '';
 			$this->_title_suffix    = isset($document['title']['suffix'])    ? $document['title']['suffix']    : '';
 			$this->_title_separator = isset($document['title']['separator']) ? $document['title']['separator'] : '';
@@ -267,7 +268,8 @@ class Document {
 	 * @param  string 	$special The optional parameter to all specific add functions
 	 * @return Document
 	 */
-	public function add ( $args, $special = null) {
+	public function add ( $args, $special = null) 
+	{
 		$is_string = is_string($args);
 		$is_array  = is_array($args);
 		$len       = count($args);
@@ -332,7 +334,8 @@ class Document {
 	{	
 		$media = is_null($media) ? "screen" : $media;
 
-		if ($file[0] !== '/') {
+		if ($file[0] !== '/') 
+		{
 			$file = $this->_paths['css'].'/'.$file;
 		}
 		if (array_key_exists($media, $this->_css)) 
@@ -349,7 +352,8 @@ class Document {
 	 * @param array $args Associative Array: array('attribute_name'=>'attribute_value')
 	 * @return Document
 	 */
-	public function add_link($args) {
+	public function add_link($args) 
+	{
 		
 		if(is_array($args)) 
 		{	
@@ -378,7 +382,8 @@ class Document {
 	public function add_js($file, $pos = 'body') 
 	{
 		$pos = is_null($pos) ? "body" : $pos;
-		if ($file[0] !== '/') {
+		if ($file[0] !== '/') 
+		{
 			$file = $this->_paths['scripts'].'/'.$file;
 		}
 		if (array_key_exists($pos, $this->_scripts)) 
@@ -435,14 +440,15 @@ class Document {
 	{	
 		$marker = strtoupper($marker);
 		// Make sure we can collect dem injections
-		if (!array_key_exists($marker, $this->_injections) || !is_array($this->_injections[$marker])) 
+		if (!array_key_exists($marker, $this->_injections) OR !is_array($this->_injections[$marker])) 
 		{
 			$this->_injections[$marker] = array();
 		}
 
 		$injection_count = count($this->_injections[$marker]);
 		// Appending the last injection on the given Marker?
-		if ($append_to_last && isset($this->_injections[$marker][$injection_count-1])) {
+		if ($append_to_last && isset($this->_injections[$marker][$injection_count-1])) 
+		{
 			$this->_injections[$marker][$injection_count-1] .= $injection;
 		}
 		else 
@@ -621,15 +627,19 @@ class Document {
 	public function set_title($title, $append = false, $with_separator = true) 
 	{
 		
-		if ($append) {
-			if ($with_separator) {
+		if ($append) 
+		{
+			if ($with_separator) 
+			{
 				$this->_title .= ' '.$this->_title_separator.' '.$title;
 			}
-			else {
+			else 
+			{
 				$this->_title .= $title;
 			}
 		}
-		else {
+		else 
+		{
 			$this->_title = $title;
 		}
 		return $this;
@@ -645,7 +655,8 @@ class Document {
 		return $this->_title;
 	}
 
-	public function parse_exec_vars($val = true) {
+	public function parse_exec_vars($val = true) 
+	{
 		$this->_parse_exec_vars = is_bool($val) ? $val : TRUE;
 		return $this;
 	}
@@ -731,7 +742,6 @@ class Document {
 		foreach ($this->_injection_log as $inject)
 		{
 			$ins["#@#".$inject[0]."#@#"] = $this->_injections[$inject[0]][$inject[1]];
-			//$this->_buffer = str_replace("#@#".$inject[0]."#@#", $this->_injections[$inject[0]][$inject[1]], $this->_buffer);
 		}	
 
 		$this->_buffer= str_replace(array_keys($ins), $ins, $this->_buffer);
@@ -783,11 +793,14 @@ class Document {
 		$this->_title           = trim($this->_title);
 		
 
-		if (strlen($this->_title_prefix)>0) {
+		if (strlen($this->_title_prefix)>0) 
+		{
 			$title_out .= $this->_title_prefix.( strlen($this->_title) ? ' '.$this->_title_separator.' ' : '');
 		}
 		$title_out .= $this->_title;
-		if (strlen($this->_title_suffix)>0) {
+		
+		if (strlen($this->_title_suffix)>0) 
+		{
 			$title_out .= ' '.$this->_title_separator.' '.$this->_title_suffix;
 		}
 		return $title_out;
