@@ -13,7 +13,7 @@ Unzip ` ___quickstart.zip ` in your webroot an play with a fresh, pre-configured
 1. Merge the files and folders with your project.
 2. It's best to autoload the 'document' library.
 3. Configure your template
-4. Replace `$this->load-view` with `$this->document->inject_view`
+4. Replace `$this->load->view` with `$this->document->inject_view`
 5. That should be it :)
 
 NOTE:
