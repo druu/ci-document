@@ -706,9 +706,12 @@ class Document {
 		$scripts = array();
 		foreach ($this->_scripts['body'] as $js)
 		{
-			array_push($scripts, '<script src="'.$js.'" defer ></script>');
+			if ($js !== '/assets/js/script.js')
+			{
+				array_push($scripts, '<script src="'.$js.'" ></script>');
+			}
 		}
-
+		array_push($scripts, '<script src="/assets/js/script.js" ></script>');
 		$scripts_out = implode("\n", $scripts);
 
 		$title_out = $this->_compile_title();
