@@ -1,3 +1,1 @@
-if (typeof console !== 'undefined') {
-	console.log('F/YEAH');
-}
+// Do what ever you want ;)

@@ -17,7 +17,6 @@
  * _TPL_OB_CONTENTS     General output buffer
  * </pre>
  * 
- * @todo  Implement:    "Add-to-head" option for add_js()
  * @todo  Implement: 	System messages
  * @todo  Implement: 	General output buffering and inject to _TPL_OB_CONTENTS
  * @todo  Implement: 	Method chaining
@@ -219,33 +218,64 @@ class Document {
 
 		$template_name = isset($document['template']) && strlen($document['template']) > 0 ? $document['template'] : 'default';
 
-		
+		// Let's see if we have a custom template config override situation here
+		if ( file_exists(FCPATH.'/templates/'.$template_name.'/document.php'))
+		{
+			// Let's get those configs merged yayyyy
+			include (FCPATH.'/templates/'.$template_name.'/document.php');
+			if (is_array($config))
+			{
+				// Merge and release some memory
+				$document = array_replace_recursive($document, $config);
+				unset($config);
+				// And just to be sure reset the template name
+				$template_name = isset($document['template']) && strlen($document['template']) > 0 ? $document['template'] : 'default'; 
+			}
+		}
 		// Apply config overrides;
 		// Relative paths for in-html use
-		$this->_paths['css']      = $this->_subdir.(isset($document['paths']['css']) ? 
-														$document['paths']['css'] : 
-														'/templates/'.$template_name.'/css');
+		$this->_paths['css']      = $this->_subdir.
+									(
+										isset($document['paths']['css']) ? 
+										$document['paths']['css'] : 
+										'/templates/'.$template_name.'/css'
+									);
 
-		$this->_paths['scripts']  = $this->_subdir.(isset($document['paths']['scripts']) ? 
-														$document['paths']['scripts'] : 
-														'/templates/'.$template_name.'/js');
+		$this->_paths['scripts']  = $this->_subdir.
+									(
+										isset($document['paths']['scripts']) ? 
+										$document['paths']['scripts'] : 
+										'/templates/'.$template_name.'/js'
+									);
 
-		$this->_paths['images']   = $this->_subdir.(isset($document['paths']['images']) ? 
-														$document['paths']['images'] : 
-														"/assets/img");
-		
+		$this->_paths['images']   = $this->_subdir.
+									(
+										isset($document['paths']['images']) ? 
+										$document['paths']['images'] : 
+										"/assets/img"
+									);
+	
 		// Absolute paths for content generation
-		$this->_paths['base']     = FCPATH.(isset($document['paths']['base']) ? 
-												$document['paths']['base'] : 
-												'templates/'.$template_name.'/base');
+		$this->_paths['base']     = FCPATH.
+									(
+										isset($document['paths']['base']) ? 
+										$document['paths']['base'] : 
+										'templates/'.$template_name.'/base'
+									);
 
-		$this->_paths['partials'] = FCPATH.(isset($document['paths']['partials']) ? 
-												$document['paths']['partials'] : 
-												'templates/'.$template_name.'/partials');
+		$this->_paths['partials'] = FCPATH.
+									(
+										isset($document['paths']['partials']) ? 
+										$document['paths']['partials'] : 
+										'templates/'.$template_name.'/partials'
+									);
 
-		$this->_paths['statics']  = FCPATH.(isset($document['paths']['statics']) ? 
-												$document['paths']['statics'] : 
-												'templates/'.$template_name.'/statics');
+		$this->_paths['statics']  = FCPATH.
+									(
+										isset($document['paths']['statics']) ? 
+										$document['paths']['statics'] : 
+										'templates/'.$template_name.'/statics'
+									);
 		
 		if(isset($document['title']) && is_array($document['title']))
 		{
@@ -310,8 +340,18 @@ class Document {
 		{
 			foreach($args as $k => $v)
 			{	
-				$k = $k ? $k : null;
-				$this->add($v, $k);
+				// $k = $k ? $k : null;
+				// $this->add($v, $k);
+				
+				if(!is_int($k))
+				{	
+					$k = $k ? $k : null;
+					$this->add($v, $k);
+				}
+				else
+				{
+					$this->add($v, $special);
+				}
 			}
 		}
 		return $this;
@@ -334,7 +374,10 @@ class Document {
 	{	
 		$media = is_null($media) ? "screen" : $media;
 
-		if ($file[0] !== '/') 
+		if (
+			$file[0] !== '/' &&
+			! preg_match('~^http[s]?\:\/\/~i', $file)
+		) 
 		{
 			$file = $this->_paths['css'].'/'.$file;
 		}
@@ -382,7 +425,10 @@ class Document {
 	public function add_js($file, $pos = 'body') 
 	{
 		$pos = is_null($pos) ? "body" : $pos;
-		if ($file[0] !== '/') 
+		if (
+			$file[0] !== '/' &&
+			! preg_match('~^http[s]?\:\/\/~i', $file)
+		) 
 		{
 			$file = $this->_paths['scripts'].'/'.$file;
 		}
@@ -706,12 +752,9 @@ class Document {
 		$scripts = array();
 		foreach ($this->_scripts['body'] as $js)
 		{
-			if ($js !== '/assets/js/script.js')
-			{
-				array_push($scripts, '<script src="'.$js.'" ></script>');
-			}
+			array_push($scripts, '<script src="'.$js.'" ></script>');
 		}
-		array_push($scripts, '<script src="/assets/js/script.js" ></script>');
+
 		$scripts_out = implode("\n", $scripts);
 
 		$title_out = $this->_compile_title();

@@ -11,10 +11,8 @@
  * @subpackage		Hooks
  * @category		document
  */
- class Document_Renderer 
- {
-	static function render() 
-	{
+ class Document_Renderer {
+	static function render() {
 		$CI =& get_instance();
 		$CI->document->prepare_render();
 		$CI->document->clean();
