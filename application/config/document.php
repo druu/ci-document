@@ -6,6 +6,9 @@
 |
 | This file will contain the settings needed to use the Document Template Engine.
 |
+| Just to let you know: the 'document.php' in your template's folder will 
+| override settings set here.
+|
 | For complete instructions please GTFO ;)
 | Just kidding. Content tba.
 |
@@ -16,6 +19,8 @@
 | tba.
 |
 */
+
+
 
 // Template folder
 $config['template']                   = 'default';

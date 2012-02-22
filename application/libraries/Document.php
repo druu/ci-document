@@ -340,8 +340,18 @@ class Document {
 		{
 			foreach($args as $k => $v)
 			{	
-				$k = $k ? $k : null;
-				$this->add($v, $k);
+				// $k = $k ? $k : null;
+				// $this->add($v, $k);
+				
+				if(!is_int($k))
+				{	
+					$k = $k ? $k : null;
+					$this->add($v, $k);
+				}
+				else
+				{
+					$this->add($v, $special);
+				}
 			}
 		}
 		return $this;
@@ -364,7 +374,10 @@ class Document {
 	{	
 		$media = is_null($media) ? "screen" : $media;
 
-		if ($file[0] !== '/') 
+		if (
+			$file[0] !== '/' &&
+			! preg_match('~^http[s]?\:\/\/~i', $file)
+		) 
 		{
 			$file = $this->_paths['css'].'/'.$file;
 		}
@@ -412,7 +425,10 @@ class Document {
 	public function add_js($file, $pos = 'body') 
 	{
 		$pos = is_null($pos) ? "body" : $pos;
-		if ($file[0] !== '/') 
+		if (
+			$file[0] !== '/' &&
+			! preg_match('~^http[s]?\:\/\/~i', $file)
+		) 
 		{
 			$file = $this->_paths['scripts'].'/'.$file;
 		}

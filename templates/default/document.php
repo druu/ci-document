@@ -27,16 +27,16 @@ $config['base']                       = 'index';
 //$config['inject']['partial']        = 'partial';
 
 // Other injections performed on every page
-$config['inject_string']['copyright'] = date('Y');
+$config['inject_string']['copyright'] = 'CI-DOCUMENT &copy; '.date('Y');
 
 // Page Title
-$config['title']['prefix'] = 'CI_Document';
-$config['title']['suffix'] = '';
+$config['title']['prefix'] = 'ci-document';
+$config['title']['suffix'] = 'codeigniter';
 $config['title']['separator'] = '|';
 
 
 // Path overrides
-//$config['paths']['css']               = '/ci-document/templates/default/css';
+//$config['paths']['css']               = '/templates/default/css';
 //$config['paths']['scripts']           = '/ci-document/templates/default/js';
 
 
@@ -46,19 +46,21 @@ $config['title']['separator'] = '|';
 // 3rd key: value of main attribute
 //   value: value of content attribute
 $config['meta']['name']['author']             = 'david.wosnitza';
-$config['meta']['name']['description']        = 'Mothereffing Template Engine!';
+$config['meta']['name']['description']        = 'Mothereffing Template Engine! ci-document template base';
 $config['meta']['name']['viewport']           = 'width=device-width,initial-scale=1';
 
 // This is how you add general link tags
-$config['links'][]	= array('rel'=>'favicon', 'src'=>'/favicon.ico');                            
+$config['links'][]	                          = array('rel'=>'favicon', 'src'=>'/favicon.ico');                            
 
 // 1st key: stylesheet links
 // 2nd key: media-attribute value
-$config['css']['screen'][]                      = 'style.css';
+$config['css']['screen'][]                    = 'bootstrap.min.css';
+$config['css']['screen'][]                    = 'bootstrap-responsive.min.css';
+$config['css']['screen'][]                    = 'style.css';
 
 // JS Files needed on every page
 // 1st key: script files
 // 2nd key: position: head or body
-// $config['scripts']['body'][]                  = 'jquery.js';
-// $config['scripts']['body'][]                  = 'plugins.js';
-// $config['scripts']['body'][]                  = 'script.js';
+$config['scripts']['head'][]                  = 'modernizr.min.js';
+$config['scripts']['body'][]                  = 'jquery.min.js';
+$config['scripts']['body'][]                  = 'bootstrap.min.js';
